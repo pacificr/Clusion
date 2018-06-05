@@ -136,7 +136,7 @@ public class RR2Lev implements Serializable {
 		}
 
 		ExecutorService service = Executors.newFixedThreadPool(threads);
-		ArrayList<String[]> inputs = new ArrayList<String[]>(threads);
+		//ArrayList<String[]> inputs = new ArrayList<String[]>(threads);
 
 		final Map<Integer, String> concurrentMap = new ConcurrentHashMap<Integer, String>();
 		for (int i = 0; i < listOfKeyword.size(); i++) {
@@ -145,7 +145,7 @@ public class RR2Lev implements Serializable {
 
 		for (int j = 0; j < threads; j++) {
 			service.execute(new Runnable() {
-				@SuppressWarnings("unused")
+				//@SuppressWarnings("unused")
 				@Override
 				public void run() {
 
@@ -176,7 +176,6 @@ public class RR2Lev implements Serializable {
 							}
 						} catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchProviderException
 								| NoSuchPaddingException | IOException | InvalidAlgorithmParameterException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 					}
@@ -275,7 +274,7 @@ public class RR2Lev implements Serializable {
 		// determine the size f the data set and therefore the size of the array
 		array = new byte[dataSize][];
 		Multimap<String, byte[]> gamma = ArrayListMultimap.create();
-		long startTime = System.nanoTime();
+		//long startTime = System.nanoTime();
 
         byte[] iv = new byte[16];
 
@@ -407,8 +406,8 @@ public class RR2Lev implements Serializable {
 			}
 
 		}
-		long endTime = System.nanoTime();
-		long totalTime = endTime - startTime;
+		//long endTime = System.nanoTime();
+		//long totalTime = endTime - startTime;
 		// System.out.println("Time for one (w, id) "+totalTime/lookup.size());
 		return gamma;
 	}

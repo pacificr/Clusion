@@ -47,7 +47,7 @@ public class TestLocalIEX2Lev {
 
 		List<byte[]> listSK = IEX2Lev.keyGen(256, pass, "salt/salt", 100000);
 
-		long startTime = System.nanoTime();
+		//long startTime = System.nanoTime();
 
 		BufferedWriter writer = new BufferedWriter(new FileWriter("logs.txt", true));
 
@@ -160,8 +160,8 @@ public class TestLocalIEX2Lev {
 
 					List<TokenDIS> tokenTMP = IEX2Lev.token(listSK, searchTMP);
 
-					Set<String> result = new HashSet<String>(RR2Lev.query(tokenTMP.get(0).getTokenMMGlobal(),
-							disj.getGlobalMM().getDictionary(), disj.getGlobalMM().getArray()));
+//					Set<String> result = new HashSet<String>(RR2Lev.query(tokenTMP.get(0).getTokenMMGlobal(),
+//							disj.getGlobalMM().getDictionary(), disj.getGlobalMM().getArray()));
 
 					if (!(tmpBol.size() == 0)) {
 						List<Integer> temp = new ArrayList<Integer>(

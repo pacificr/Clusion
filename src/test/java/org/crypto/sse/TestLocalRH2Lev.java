@@ -71,7 +71,7 @@ public class TestLocalRH2Lev {
 			String keyword = keyRead.readLine();
 			byte[][] token = RH2Lev.token(sk, keyword);
 			System.out.println(RH2Lev.resolve(CryptoPrimitives.generateCmac(sk, 3 + new String()),
-					twolev.query(token, twolev.getDictionary(), twolev.getArray())));
+					RH2Lev.query(token, twolev.getDictionary(), twolev.getArray())));
 
 		}
 

@@ -71,7 +71,7 @@ public class TestLocalRR2Lev {
 			String keyword = keyRead.readLine();
 			byte[][] token = RR2Lev.token(listSK.get(0), keyword);
 
-			System.out.println("Final Result: " + twolev.query(token, twolev.getDictionary(), twolev.getArray()));
+			System.out.println("Final Result: " + RR2Lev.query(token, twolev.getDictionary(), twolev.getArray()));
 
 		}
 

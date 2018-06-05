@@ -21,7 +21,7 @@
 //***********************************************************************************************//
 package org.crypto.sse;
 
-import com.google.common.collect.Multimap;
+//import com.google.common.collect.Multimap;
 
 import javax.crypto.NoSuchPaddingException;
 import java.io.File;
@@ -44,7 +44,7 @@ public class TextProc {
 			throws IOException, InvalidKeyException, InvalidAlgorithmParameterException, NoSuchAlgorithmException,
 			NoSuchProviderException, NoSuchPaddingException, InvalidKeySpecException {
 
-		int counter = 0;
+		//int counter = 0;
 		ArrayList<File> listOfFile = new ArrayList<File>();
 
 		// ***********************************************************************************************//
@@ -60,10 +60,8 @@ public class TextProc {
 		try {
 			TextExtractPar.extractTextPar(listOfFile);
 		} catch (InterruptedException e2) {
-			// TODO Auto-generated catch block
 			e2.printStackTrace();
 		} catch (ExecutionException e2) {
-			// TODO Auto-generated catch block
 			e2.printStackTrace();
 		}
 
@@ -72,9 +70,9 @@ public class TextProc {
 		///////////////////// Partitioning /////////////////////////////
 
 		// ***********************************************************************************************//
-		if (flag) {
-			Multimap<Integer, String> partitions = Partition.partitioning(TextExtractPar.lp1);
-		}
+//		if (flag) {
+//			Multimap<Integer, String> partitions = Partition.partitioning(TextExtractPar.lp1);
+//		}
 
 	}
 

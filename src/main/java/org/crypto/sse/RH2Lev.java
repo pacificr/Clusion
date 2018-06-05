@@ -28,16 +28,16 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
 import javax.crypto.NoSuchPaddingException;
-import java.io.File;
+//import java.io.File;
 import java.io.IOException;
-import java.io.Serializable;
+//import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.SecureRandom;
-import java.security.spec.InvalidKeySpecException;
+//import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -102,7 +102,7 @@ public class RH2Lev {
 		}
 
 		ExecutorService service = Executors.newFixedThreadPool(threads);
-		ArrayList<String[]> inputs = new ArrayList<String[]>(threads);
+		//ArrayList<String[]> inputs = new ArrayList<String[]>(threads);
 
 		final Map<Integer, String> concurrentMap = new ConcurrentHashMap<Integer, String>();
 		for (int i = 0; i < listOfKeyword.size(); i++) {
@@ -111,7 +111,7 @@ public class RH2Lev {
 
 		for (int j = 0; j < threads; j++) {
 			service.execute(new Runnable() {
-				@SuppressWarnings("unused")
+				//@SuppressWarnings("unused")
 				@Override
 				public void run() {
 
@@ -141,7 +141,6 @@ public class RH2Lev {
 							}
 						} catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchProviderException
 								| NoSuchPaddingException | IOException | InvalidAlgorithmParameterException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 					}

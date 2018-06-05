@@ -113,7 +113,6 @@ public class TestLocalDynRH_DISK {
 							tokenUp = DynRH_Disk.tokenUpdate(sk, lookup);
 						} catch (InvalidKeyException | InvalidAlgorithmParameterException | NoSuchAlgorithmException
 								| NoSuchProviderException | NoSuchPaddingException | IOException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 						DynRH_Disk.update(dictionaryUpdates, tokenUp);

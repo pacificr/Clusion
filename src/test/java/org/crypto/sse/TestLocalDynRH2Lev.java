@@ -8,7 +8,7 @@ import java.io.*;
 import java.util.ArrayList;
 
 import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
+//import com.google.common.collect.Multimap;
 import com.google.common.collect.TreeMultimap;
 
 public class TestLocalDynRH2Lev {
@@ -72,7 +72,7 @@ public class TestLocalDynRH2Lev {
 				String keyword = keyRead.readLine();
 				byte[][] token = DynRH2Lev.genTokenFS(sk, keyword);
 
-				System.out.println(DynRH2Lev.resolve(CryptoPrimitives.generateCmac(sk, 3 + new String()), twolev
+				System.out.println(DynRH2Lev.resolve(CryptoPrimitives.generateCmac(sk, 3 + new String()), DynRH2Lev
 						.queryFS(token, twolev.getDictionary(), twolev.getArray(), twolev.getDictionaryUpdates())));
 
 			}
@@ -82,7 +82,7 @@ public class TestLocalDynRH2Lev {
 			byte[][] token = DynRH2Lev.genToken(sk, keyword);
 
 			System.out.println(DynRH2Lev.resolve(CryptoPrimitives.generateCmac(sk, 3 + new String()),
-					twolev.query(token, twolev.getDictionary(), twolev.getArray(), twolev.getDictionaryUpdates())));
+					DynRH2Lev.query(token, twolev.getDictionary(), twolev.getArray(), twolev.getDictionaryUpdates())));
 
 		}
 

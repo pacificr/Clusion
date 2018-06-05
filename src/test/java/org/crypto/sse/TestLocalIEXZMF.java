@@ -56,7 +56,7 @@ public class TestLocalIEXZMF {
 
 		List<byte[]> listSK = IEXZMF.keyGen(128, pass, "salt/salt", 100);
 
-		long startTime = System.nanoTime();
+		//long startTime = System.nanoTime();
 
 		System.out.println("Enter the relative path name of the folder that contains the files to make searchable");
 
@@ -92,7 +92,7 @@ public class TestLocalIEXZMF {
 
 		System.out.println("\n Beginning of local encrypted multi-map construction \n");
 
-		IEXZMF.constructMatryoshkaPar(new ArrayList(TextExtractPar.lp1.keySet()), listSK.get(0), listSK.get(1),
+		IEXZMF.constructMatryoshkaPar(new ArrayList<String>(TextExtractPar.lp1.keySet()), listSK.get(0), listSK.get(1),
 				maxLengthOfMask, falsePosRate);
 
 		long endTime2 = System.nanoTime();
@@ -162,8 +162,8 @@ public class TestLocalIEXZMF {
 					// Here we perform an intersection (contrary to its
 					// argument)
 
-					List<String> resultTMP = RR2Lev.query(tokenTMP.get(0).getTokenMMGlobal(),
-							disj.getGlobalMM().getDictionary(), disj.getGlobalMM().getArray());
+//					List<String> resultTMP = RR2Lev.query(tokenTMP.get(0).getTokenMMGlobal(),
+//							disj.getGlobalMM().getDictionary(), disj.getGlobalMM().getArray());
 
 					Map<String, boolean[]> listOfbloomFilter = new HashMap<String, boolean[]>();
 

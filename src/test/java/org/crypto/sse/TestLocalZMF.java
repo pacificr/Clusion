@@ -25,9 +25,9 @@
 package org.crypto.sse;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
+//import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
+//import java.io.FileWriter;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,9 +47,9 @@ public class TestLocalZMF {
 
 		byte[] sk = ZMF.keyGenSM(128 * 3, pass, "salt/salt", 100);
 
-		long startTime = System.nanoTime();
+		//long startTime = System.nanoTime();
 
-		BufferedWriter writer = new BufferedWriter(new FileWriter("logs.txt", true));
+		//BufferedWriter writer = new BufferedWriter(new FileWriter("logs.txt", true));
 
 		System.out.println("Enter the relative path name of the folder that contains the files to make searchable:");
 

@@ -58,7 +58,7 @@ import org.apache.xmlbeans.XmlException;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Iterator;
+//import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.*;
@@ -192,8 +192,8 @@ public class TextExtractPar implements Serializable {
 					doc = new XWPFDocument(fis);
 					XWPFWordExtractor ex = new XWPFWordExtractor(doc);
 					lines.add(ex.getText());
+					ex.close();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					System.out.println("File not read: " + file.getName());
 				}
 
@@ -213,11 +213,10 @@ public class TextExtractPar implements Serializable {
 					ppt = OPCPackage.open(fis);
 					XSLFPowerPointExtractor xw = new XSLFPowerPointExtractor(ppt);
 					lines.add(xw.getText());
+					xw.close();
 				} catch (XmlException e) {
-					// TODO Auto-generated catch block
 					System.out.println("File not read: " + file.getName());
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					System.out.println("File not read: " + file.getName());
 				} catch (OpenXML4JException e) {
 					System.out.println("File not read: " + file.getName());
@@ -239,14 +238,12 @@ public class TextExtractPar implements Serializable {
 					xls = OPCPackage.open(fis);
 					XSSFExcelExtractor xe = new XSSFExcelExtractor(xls);
 					lines.add(xe.getText());
+					xe.close();
 				} catch (InvalidFormatException e) {
-					// TODO Auto-generated catch block
 					System.out.println("File not read: " + file.getName());
 				} catch (IOException e) {
 					System.out.println("File not read: " + file.getName());
-
 				} catch (XmlException e) {
-					// TODO Auto-generated catch block
 					System.out.println("File not read: " + file.getName());
 				} catch (OpenXML4JException e) {
 					System.out.println("File not read: " + file.getName());
@@ -268,10 +265,10 @@ public class TextExtractPar implements Serializable {
 					fs = new NPOIFSFileSystem(file);
 					WordExtractor extractor = new WordExtractor(fs.getRoot());
 					for (String rawText : extractor.getParagraphText()) {
-						lines.add(extractor.stripFields(rawText));
+						lines.add(WordExtractor.stripFields(rawText));
 					}
+					extractor.close();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					System.out.println("File not read: " + file.getName());
 				}
 
@@ -295,7 +292,6 @@ public class TextExtractPar implements Serializable {
 					lines.add(stripper.getText(new PDDocument(cd)));
 
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					System.out.println("File not read: " + file.getName());
 				}
 
@@ -328,7 +324,6 @@ public class TextExtractPar implements Serializable {
 
 					lines = Files.readLines(file, Charsets.UTF_8);
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					System.out.println("File not read: " + file.getName());
 				} finally {
 					try {
@@ -349,7 +344,7 @@ public class TextExtractPar implements Serializable {
 			int temporaryCounter = 0;
 
 			// Filter threshold
-			int counterDoc = 0;
+			//int counterDoc = 0;
 			for (int i = 0; i < lines.size(); i++) {
 
 				CharArraySet noise = EnglishAnalyzer.getDefaultStopSet();

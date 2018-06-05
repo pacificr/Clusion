@@ -36,7 +36,7 @@ import java.security.NoSuchProviderException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
+//import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -97,7 +97,7 @@ public class IEXZMF implements Serializable {
 		System.out.println("Number of extracted keywords " + TextExtractPar.lp1.keySet().size());
 		System.out.println("Size of the inverted index (leakage N) " + TextExtractPar.lp1.size());
 
-		constructMatryoshkaPar(new ArrayList(TextExtractPar.lp1.keySet()), listOfkeys.get(0), listOfkeys.get(1),
+		constructMatryoshkaPar(new ArrayList<String>(TextExtractPar.lp1.keySet()), listOfkeys.get(0), listOfkeys.get(1),
 				maxLengthOfMask, falsePosRate);
 
 	}
@@ -259,7 +259,7 @@ public class IEXZMF implements Serializable {
 
 		for (int j = 0; j < threads; j++) {
 			service.execute(new Runnable() {
-				@SuppressWarnings("unused")
+				//@SuppressWarnings("unused")
 				@Override
 				public void run() {
 
@@ -285,7 +285,6 @@ public class IEXZMF implements Serializable {
 									.addAll(secureSetMPar(input, keySM, keyInvInd, maxLengthOfMask, falsePosRate));
 						} catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchProviderException
 								| NoSuchPaddingException | IOException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 					}

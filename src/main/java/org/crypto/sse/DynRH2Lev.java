@@ -32,7 +32,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.SecureRandom;
-import java.util.ArrayList;
+//import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -50,7 +50,6 @@ public class DynRH2Lev extends RH2Lev {
 
 	public DynRH2Lev(Multimap<String, byte[]> dictionary, byte[][] arr, HashMap<String, byte[]> dictionaryUpdates) {
 		super(dictionary, arr);
-		// TODO Auto-generated constructor stub
 		this.dictionaryUpdates = dictionaryUpdates;
 
 	}

@@ -300,14 +300,12 @@ public class IEX2LevAMAZON {
 			try {
 				lookup = (Multimap<String, String>) Serializer.deserialize(Base64.decodeBase64(inst1.getBytes()));
 			} catch (ClassNotFoundException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 			Multimap<String, String> lookup2 = null;
 			try {
 				lookup2 = (Multimap<String, String>) Serializer.deserialize(Base64.decodeBase64(inst2.getBytes()));
 			} catch (ClassNotFoundException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 
@@ -315,7 +313,6 @@ public class IEX2LevAMAZON {
 			try {
 				listSK = (List<byte[]>) Serializer.deserialize(Base64.decodeBase64(inst3.getBytes()));
 			} catch (ClassNotFoundException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 
@@ -355,7 +352,6 @@ public class IEX2LevAMAZON {
 				}
 			} catch (InvalidKeyException | InvalidAlgorithmParameterException | NoSuchAlgorithmException
 					| NoSuchProviderException | NoSuchPaddingException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			word.set(Integer.toString(counter));
@@ -380,7 +376,7 @@ public class IEX2LevAMAZON {
 	 * @param args
 	 * @throws Exception
 	 */
-	@SuppressWarnings("null")
+	//@SuppressWarnings("null")
 	public static void main(String[] args) throws Exception {
 
 		// First Job

@@ -251,6 +251,8 @@ public class CryptoPrimitives {
 			bOut.write(ch);
 		}
 		byte[] cipherText = concat(ivBytes, bOut.toByteArray());
+		
+		cIn.close();
 
 		return cipherText;
 
@@ -288,6 +290,8 @@ public class CryptoPrimitives {
 		}
 		byte[] cipherText = concat(ivBytes, bOut.toByteArray());
 
+		cIn.close();
+		
 		return cipherText;
 
 	}
@@ -396,6 +400,8 @@ public class CryptoPrimitives {
 		}
 		byte[] cipherText = concat(ivBytes, bOut.toByteArray());
 
+		cIn.close();
+		
 		return cipherText;
 
 	}
@@ -445,6 +451,8 @@ public class CryptoPrimitives {
 		// Send the ciphertext
 		out.writeObject(cipherText);
 		out.flush();
+		
+		cIn.close();
 
 	}
 
@@ -485,6 +493,8 @@ public class CryptoPrimitives {
 		byte[] cipherText = concat(ivBytes, bOut.toByteArray());
 
 		write(cipherText, outputFileName, folderName);
+		
+		cIn.close();
 
 	}
 
@@ -587,6 +597,8 @@ public class CryptoPrimitives {
 			}
 			results[i] = CryptoPrimitives.bytesToBoolean(bOut.toByteArray());
 			tmpResults1[i + 1] = results[i];
+			
+			cIn.close();
 
 		}
 
