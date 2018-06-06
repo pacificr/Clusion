@@ -108,13 +108,13 @@ public class IEX2Lev implements Serializable {
 
 	// ***********************************************************************************************//
 
-	public static IEX2Lev setup(List<byte[]> keys, Multimap<String, String> lookup, Multimap<String, String> lookup2,
+	public IEX2Lev (List<byte[]> keys, Multimap<String, String> lookup, Multimap<String, String> lookup2,
 			int bigBlock, int smallBlock, int dataSize) throws InterruptedException, ExecutionException, IOException {
 
 		// Instantiation of the object that contains Global MM, Local MMs and
 		// the dictionary
-		RR2Lev[] localMultiMap = new RR2Lev[lookup.keySet().size()];
-		Multimap<String, Integer> dictionaryForMM = ArrayListMultimap.create();
+		localMultiMap = new RR2Lev[lookup.keySet().size()];
+		dictionaryForMM = ArrayListMultimap.create();
 
 		System.out.println("Number of (w, id) pairs " + lookup.size());
 
@@ -152,9 +152,11 @@ public class IEX2Lev implements Serializable {
 
 		long startTime1 = System.nanoTime();
 
-		IEX2Lev disj2 = new IEX2Lev(RR2Lev.constructEMMParGMM(keys.get(0), lookup, bigBlock, smallBlock, dataSize),
-				localMultiMap, dictionaryForMM);
+//		IEX2Lev disj2 = new IEX2Lev(RR2Lev.constructEMMParGMM(keys.get(0), lookup, bigBlock, smallBlock, dataSize),
+//				localMultiMap, dictionaryForMM);
 
+		globalMM = RR2Lev.constructEMMParGMM(keys.get(0), lookup, bigBlock, smallBlock, dataSize);
+		
 		long endTime1 = System.nanoTime();
 
 		writer.write("\n Time of MM global setup time #(w, id)/#DB " + (endTime1 - startTime1) / lookup2.size());
@@ -226,7 +228,7 @@ public class IEX2Lev implements Serializable {
 				// End of VW construction
 				RR2Lev.counter = 0;
 				// dataSize = (int) filterParameter;
-				disj2.getLocalMultiMap()[counter] = RR2Lev.constructEMMParGMM(
+				localMultiMap[counter] = RR2Lev.constructEMMParGMM(
 						CryptoPrimitives.generateCmac(keys.get(0), keyword), secondaryLookup, bigBlock, smallBlock,
 						dataSize);
 				byte[] key3 = CryptoPrimitives.generateCmac(keys.get(1), 3 + keyword);
@@ -242,8 +244,8 @@ public class IEX2Lev implements Serializable {
 
 		System.out.println("Time to construct LMM " + (endTime - startTime) / 1000000000);
 
-		disj2.setDictionaryForMM(dictionaryForMM);
-		return disj2;
+//		disj2.setDictionaryForMM(dictionaryForMM);
+//		return disj2;
 
 	}
 

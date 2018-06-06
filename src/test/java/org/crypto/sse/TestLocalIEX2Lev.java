@@ -70,7 +70,7 @@ public class TestLocalIEX2Lev {
 
 		long startTime2 = System.nanoTime();
 
-		IEX2Lev disj = IEX2Lev.setup(listSK, TextExtractPar.lp1, TextExtractPar.lp2, bigBlock, smallBlock, 0);
+		IEX2Lev disj = new IEX2Lev(listSK, TextExtractPar.lp1, TextExtractPar.lp2, bigBlock, smallBlock, 0);
 
 		long endTime2 = System.nanoTime();
 		long totalTime2 = endTime2 - startTime2;
