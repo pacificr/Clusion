@@ -1,0 +1,71 @@
+able\z able
+ible\z ible
+
+ally\z ally
+illy\z illy
+elly\z elly
+lly\z lly
+ely\z ely
+ly\z ly
+
+ie ie
+ei ei
+
+au au
+ua ua
+
+ar\z ar
+er\z er
+
+ch ch
+sc sc
+
+tion\z tion
+sion\z sion
+
+ous\z ous
+us\z us
+
+ery\z ery
+rey\z rey
+
+ence\z ence
+ance\z ance
+
+\Akernel\z kernel
+\Acolonel\z colonel
+
+right\z right
+write\z write
+wright\z wright
+
+or\z or
+our\z our
+
+\Apro pro
+\Apre pre
+
+\Asche sche
+\Ask sk
+
+\Atheir\z their
+\Athere\z there
+\Athey're\z they're
+
+mm mm
+m m
+
+nn nn
+n n
+
+tt tt
+t t
+
+\Aweather\z weather
+\Awhether\z whether
+
+se\z se
+ze\z ze
+
+ight ight
+ite ite
