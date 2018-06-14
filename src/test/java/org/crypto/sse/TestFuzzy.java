@@ -18,6 +18,8 @@ public class TestFuzzy {
 		String pass = keyRead.readLine();
 
 		//----Quick test things
+		JazzySpellChecker jazzy = new JazzySpellChecker();
+		System.out.println(jazzy.getSuggestions(pass));
 		System.out.println(Fuzzy.getGode(pass));
 		System.out.println(Fuzzy.getCommonMisspellings(pass));
 		//----
@@ -43,6 +45,8 @@ public class TestFuzzy {
 		int smallBlock = 100;
 		
 		//----Add Fuzzyness to multimaps
+		System.out.println("\nNew First mult-map " + TextExtractPar.lp1);
+		System.out.println("New Second multi-map " + TextExtractPar.lp2);
 		
 		//useCommonMisspellings();
 		useSoundex();
