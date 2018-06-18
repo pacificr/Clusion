@@ -32,12 +32,28 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Handler;
+import java.util.logging.Logger;
 
 import javax.crypto.NoSuchPaddingException;
 
 public class TestLocalIEX2Lev {
 
 	public static void main(String[] args) throws Exception {
+		
+		Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+
+    // suppress the logging output to the console
+    for (Handler handler : logger.getHandlers()) {
+        logger.removeHandler(handler);
+    }
+    
+    Handler handler = new ConsoleHandler();
+    handler.setFormatter(new LogFormat());
+    logger.addHandler(handler);
+
+		//Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).setLevel(Level.OFF);
 
 		BufferedReader keyRead = new BufferedReader(new InputStreamReader(System.in));
 

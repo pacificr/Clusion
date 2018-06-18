@@ -37,6 +37,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.*;
+import java.util.logging.Logger;
 
 //***********************************************************************************************//
 
@@ -50,6 +51,8 @@ import java.util.concurrent.*;
 //***********************************************************************************************//	
 
 public class RR2Lev implements Serializable {
+	
+	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	// define the number of character that a file identifier can have
 	public static int sizeOfFileIdentifer = 40;
@@ -234,7 +237,7 @@ public class RR2Lev implements Serializable {
 			inputs.add(i, tmp);
 		}
 
-		System.out.println("End of Partitionning  \n");
+		LOGGER.info("End of Partitionning  \n");
 
 		List<Future<Multimap<String, byte[]>>> futures = new ArrayList<Future<Multimap<String, byte[]>>>();
 		for (final String[] input : inputs) {
