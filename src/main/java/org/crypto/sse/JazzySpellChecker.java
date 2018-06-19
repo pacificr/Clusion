@@ -31,7 +31,7 @@ public class JazzySpellChecker implements SpellCheckListener {
 
 	static {
 
-		File dict = new File("6of12.txt");
+		File dict = new File(Fuzzy.DICTIONARY);
 		try {
 			dictionaryHashMap = new SpellDictionaryHashMap(dict);
 		} catch (FileNotFoundException e) {

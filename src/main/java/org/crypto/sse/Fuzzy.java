@@ -1,12 +1,16 @@
 package org.crypto.sse;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
+
+import org.tartarus.snowball.ext.PorterStemmer;
+
 import java.util.regex.Matcher;
 
 import com.google.common.collect.ArrayListMultimap;
@@ -17,6 +21,9 @@ public class Fuzzy {
 	final private static char[] LETTERS = "abcdefghijklmnopqrstuvwxyz".toCharArray();
 	final private static Multimap<Pattern, String> MISSPELLING_RULES = ArrayListMultimap.create();
 	final private static List<ArrayList<Pattern>> MISSPELLING_FAMILIES = new ArrayList<ArrayList<Pattern>>();
+	final private static PorterStemmer STEMMER = new PorterStemmer();
+	
+	final public static String DICTIONARY = "2of12.txt";
 	
 	public static void initializeMisspellingRules() {
 		if (!MISSPELLING_RULES.isEmpty())
@@ -160,7 +167,7 @@ public class Fuzzy {
 			}
 
 			case 'L': {
-				x[i] = '4';
+				x[i] = '4'; 
 				break;
 			}
 
@@ -195,5 +202,66 @@ public class Fuzzy {
 		// Pad with 0's or truncate
 		output = output + "0000";
 		return output.substring(0, 4);
+	}
+	
+	public static String getStem(String word) {
+		STEMMER.setCurrent(word);
+		STEMMER.stem();
+		return STEMMER.getCurrent();
+	}
+	
+	public static void main(String[] args) {
+		Multimap <String, String> stemmingMap = makeStemmingMap(DICTIONARY);
+		//Multimap <String, String> soundex = makeSoundex(DICTIONARY);
+		
+		for (String key : stemmingMap.keySet())
+		{
+			System.out.println(key);
+			for (String word : stemmingMap.get(key)) {
+				System.out.println("\t" + word);
+			}
+		}
+		
+	}
+	
+	public static Multimap<String, String> makeSoundex(String in) {
+		Multimap<String, String> output = ArrayListMultimap.create();
+		BufferedReader fileIn;
+		try {
+			fileIn = new BufferedReader(new FileReader(new File(in)));
+			String line;
+			while ((line = fileIn.readLine()) != null) {
+				output.put(getGode(line).intern(), line.intern());
+			}
+			fileIn.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return output;
+	}
+	
+	public static Multimap<String, String> makeStemmingMap(String in) {
+		Multimap<String, String> output = ArrayListMultimap.create();
+		BufferedReader fileIn;
+		PorterStemmer stemmer = new PorterStemmer();
+		try {
+			fileIn = new BufferedReader(new FileReader(new File(in)));
+			String line;
+			while ((line = fileIn.readLine()) != null) {
+				stemmer.setCurrent(line);
+        stemmer.stem();
+				output.put((stemmer.getCurrent()).intern(), line.intern());
+			}
+			fileIn.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return output;
 	}
 }
