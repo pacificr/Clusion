@@ -29,4 +29,6 @@ logs.txt
 temp-logs.txt
 words-logs.txt
 
+test.db
+
 hs_err_pid*

@@ -27,11 +27,11 @@ public class JazzySpellChecker implements SpellCheckListener {
 		return misspelledWords;
 	}
 
-	private static SpellDictionaryHashMap dictionaryHashMap;
+	public static SpellDictionaryHashMap dictionaryHashMap;
 
 	static {
 
-		File dict = new File(Fuzzy.DICTIONARY);
+		File dict = new File(Fuzzy.DICTIONARY_FILE);
 		try {
 			dictionaryHashMap = new SpellDictionaryHashMap(dict);
 		} catch (FileNotFoundException e) {

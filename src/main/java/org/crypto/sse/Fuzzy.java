@@ -22,8 +22,30 @@ public class Fuzzy {
 	final private static Multimap<Pattern, String> MISSPELLING_RULES = ArrayListMultimap.create();
 	final private static List<ArrayList<Pattern>> MISSPELLING_FAMILIES = new ArrayList<ArrayList<Pattern>>();
 	final private static PorterStemmer STEMMER = new PorterStemmer();
+	final private static List<String> DICTIONARY = new ArrayList<String>();
+	final public static JazzySpellChecker JAZZY = new JazzySpellChecker();
 	
-	final public static String DICTIONARY = "2of12.txt";
+	final public static String DICTIONARY_FILE = "2of12.txt";
+
+	final private static int NGRAM_REQUIREMENT = 3;
+	
+	static {
+
+		BufferedReader fileIn;
+		
+		try {
+			fileIn = new BufferedReader(new FileReader(new File(Fuzzy.DICTIONARY_FILE)));
+			String line;
+			while ((line = fileIn.readLine()) != null) {
+				DICTIONARY.add(line);
+			}
+			fileIn.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	public static void initializeMisspellingRules() {
 		if (!MISSPELLING_RULES.isEmpty())
@@ -79,9 +101,9 @@ public class Fuzzy {
 					int resultSize = results.size();
 					
 					for (int i = 0; i < resultSize; ++i) {
-						results.addAll(applyRules(results.get(i), pattern));
+						results.addAll(applyRules(results.get(i), pattern, str));
 					}
-					results.addAll(applyRules(str, pattern));
+					results.addAll(applyRules(str, pattern, str));
 					
 					break;
 				}
@@ -91,14 +113,89 @@ public class Fuzzy {
 		return results;
 	}
 	
-	private static List<String> applyRules (String str, Pattern rule) {
+	private static List<String> applyRules (String str, Pattern rule, String originalStr) {
 		List<String> results = new ArrayList<String>();
 		Matcher matcher = rule.matcher(str);
 		
 		while (matcher.find()) {
 			for (String alternative : MISSPELLING_RULES.get(rule))
 			{
-				results.add(str.substring(0, matcher.start()) + alternative + str.substring(matcher.end()));
+				String word = str.substring(0, matcher.start()) + alternative + str.substring(matcher.end()).intern();
+				List<String> suggestions = JAZZY.getSuggestions(word);
+				//System.out.print("Misspeling attempt: " + originalStr + ", " + word + ", " + suggestions);
+				if (suggestions.size() > 0 && originalStr.equals(suggestions.get(0))) {
+					results.add(word);
+					//System.out.print(", yes");
+				}
+				//System.out.println();
+			}
+		}
+		
+		return results;
+	}
+	
+	public static List<String> getNGrams(String str, int n) {
+		List<String> results = new ArrayList<String>();
+		
+		for (int i = 0; i < str.length() - n + 1; ++i) {
+			results.add(str.substring(i, i+n));
+		}
+		
+		return results;
+	}
+	
+	public static List<String> getNGramCloseWords(String str, int n){
+		return getNGramCloseWords(str, n, 1000);
+	}
+	
+	public static List<String> getNGramCloseWords(String str, int n, int max){
+		List<String> results = new ArrayList<String>();
+		
+		for (String word : DICTIONARY) {
+			int matches = 0;
+			for (String gram1 : getNGrams(word, n)) {
+				for (String gram2 : getNGrams(str, n)) {
+					if (gram1.equals(gram2)) {
+						matches++;
+					}
+				}
+			}
+			if (!str.equals(word)) {
+				int minLength = Math.min(word.length(), str.length());
+				int maxLength = Math.max(word.length(), str.length());
+				
+				if (matches > 1 && matches > Math.min(minLength - n, maxLength - n - NGRAM_REQUIREMENT)) {
+					results.add(word);
+				}
+			}
+		}
+		
+		//Limit number of results
+		if (results.size() > max) {
+			Multimap<Integer, String> occurances = ArrayListMultimap.create();
+			int num = 0;
+			int tippingPoint = 0;
+			int most = 0;
+			
+			for (String word : results) {
+				int editDistance = getEditDistance(str, word);
+				occurances.put(editDistance, word);
+				if (editDistance > most) {
+					most = editDistance;
+				}
+			}
+			
+			//printMultimapInt(occurances);
+			
+			for (int i = 1; num < max ; ++i) {
+				num += occurances.get(i).size();
+				tippingPoint = i;
+			}
+			
+			for (int i = tippingPoint; i <= most; ++i) {
+				for (String word : occurances.get(i)) {
+					results.remove(word);
+				}
 			}
 		}
 		
@@ -128,6 +225,47 @@ public class Fuzzy {
 		}
 		
 		return results;
+	}
+	
+	//https://www.programcreek.com/2013/12/edit-distance-in-java/
+	public static int getEditDistance(String word1, String word2) {
+		int len1 = word1.length();
+		int len2 = word2.length();
+	 
+		// len1+1, len2+1, because finally return dp[len1][len2]
+		int[][] dp = new int[len1 + 1][len2 + 1];
+	 
+		for (int i = 0; i <= len1; i++) {
+			dp[i][0] = i;
+		}
+	 
+		for (int j = 0; j <= len2; j++) {
+			dp[0][j] = j;
+		}
+	 
+		//iterate though, and check last char
+		for (int i = 0; i < len1; i++) {
+			char c1 = word1.charAt(i);
+			for (int j = 0; j < len2; j++) {
+				char c2 = word2.charAt(j);
+	 
+				//if last two chars equal
+				if (c1 == c2) {
+					//update dp value for +1 length
+					dp[i + 1][j + 1] = dp[i][j];
+				} else {
+					int replace = dp[i][j] + 1;
+					int insert = dp[i][j + 1] + 1;
+					int delete = dp[i + 1][j] + 1;
+	 
+					int min = replace > insert ? insert : replace;
+					min = delete > min ? min : delete;
+					dp[i + 1][j + 1] = min;
+				}
+			}
+		}
+	 
+		return dp[len1][len2];
 	}
 	
 //https://howtodoinjava.com/algorithm/implement-phonetic-search-using-soundex-algorithm/
@@ -211,55 +349,86 @@ public class Fuzzy {
 	}
 	
 	public static void main(String[] args) {
-		Multimap <String, String> stemmingMap = makeStemmingMap(DICTIONARY);
-		//Multimap <String, String> soundex = makeSoundex(DICTIONARY);
+		System.out.println("Test");
 		
-		for (String key : stemmingMap.keySet())
-		{
-			System.out.println(key);
-			for (String word : stemmingMap.get(key)) {
-				System.out.println("\t" + word);
-			}
-		}
+		Multimap <String, String> test = makeNGramMap(DICTIONARY_FILE);
+		//Multimap <String, String> test = makeMisspellingMap(DICTIONARY);
+		//Multimap <String, String> test = makeStemmingMap(DICTIONARY);
+		//Multimap <String, String> test = makeSoundex(DICTIONARY);
+		
+		printMultimap(test);
 		
 	}
 	
-	public static Multimap<String, String> makeSoundex(String in) {
-		Multimap<String, String> output = ArrayListMultimap.create();
-		BufferedReader fileIn;
-		try {
-			fileIn = new BufferedReader(new FileReader(new File(in)));
-			String line;
-			while ((line = fileIn.readLine()) != null) {
-				output.put(getGode(line).intern(), line.intern());
+	public static void printMultimapInt(Multimap<Integer,String> mm) {
+		for (Integer key : mm.keySet())
+		{
+			System.out.println(key);
+			for (String word : mm.get(key)) {
+				System.out.println("\t" + word);
 			}
-			fileIn.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
-		
+	}
+	
+	public static void printMultimap(Multimap<String,String> mm) {
+		for (String key : mm.keySet())
+		{
+			System.out.println(key);
+			for (String word : mm.get(key)) {
+				System.out.println("\t" + word);
+			}
+		}
+	}
+	
+	public static Multimap<String, String> makeSoundex() {
+		Multimap<String, String> output = ArrayListMultimap.create();
+		for (String line : DICTIONARY) {
+			output.put(getGode(line).intern(), line.intern());
+		}
 		return output;
 	}
 	
 	public static Multimap<String, String> makeStemmingMap(String in) {
 		Multimap<String, String> output = ArrayListMultimap.create();
-		BufferedReader fileIn;
 		PorterStemmer stemmer = new PorterStemmer();
-		try {
-			fileIn = new BufferedReader(new FileReader(new File(in)));
-			String line;
-			while ((line = fileIn.readLine()) != null) {
-				stemmer.setCurrent(line);
-        stemmer.stem();
-				output.put((stemmer.getCurrent()).intern(), line.intern());
+		for (String line : DICTIONARY) {
+			stemmer.setCurrent(line);
+      stemmer.stem();
+			output.put((stemmer.getCurrent()).intern(), line.intern());
+		}
+		
+		return output;
+	}
+	
+	public static Multimap<String, String> makeNGramMap(String in) {
+		Multimap<String, String> output = ArrayListMultimap.create();
+		List<String> words = new ArrayList<String>();
+		int n = 3;
+		
+		int done = 0;
+		for (String line : DICTIONARY) {
+			for (String word : words) {
+				int matches = 0;
+				for (String gram1 : getNGrams(word, n)) {
+					for (String gram2 : getNGrams(line, n)) {
+						if (gram1.equals(gram2)) {
+							matches++;
+						}
+					}
+				}
+				int minLength = Math.min(word.length(), line.length());
+				int maxLength = Math.max(word.length(), line.length());
+				
+				if (matches > 1 && matches > Math.min(minLength - n, maxLength - n - NGRAM_REQUIREMENT)) {
+					output.put(word.intern(), line.intern());
+					output.put(line.intern(), word.intern());
+				}
 			}
-			fileIn.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+			
+			if(done++ > 1000) {
+				break;
+			}
+			words.add(line);
 		}
 		
 		return output;
