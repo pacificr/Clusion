@@ -47,6 +47,8 @@ public class TestLocalIEXZMF {
 	private static final int maxLengthOfMask = 20;
 
 	public static void main(String[] args) throws Exception {
+		
+		Printer.addPrinter(new Printer(Printer.LEVEL.EXTRA));
 
 		BufferedReader keyRead = new BufferedReader(new InputStreamReader(System.in));
 

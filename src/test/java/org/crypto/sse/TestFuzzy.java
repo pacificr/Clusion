@@ -15,6 +15,8 @@ public class TestFuzzy {
 	
 	public static void main(String[] args) throws Exception {
 
+		Printer.addPrinter(new Printer(Printer.LEVEL.STATS));
+		
 		keyRead = new BufferedReader(new InputStreamReader(System.in));
 
 		System.out.println("Enter your password:");
@@ -23,12 +25,12 @@ public class TestFuzzy {
 
 		//----Quick test things
 		JazzySpellChecker jazzy = new JazzySpellChecker();
-		System.out.println("Jazzy Suggestions:  " + jazzy.getSuggestions(pass));
-		System.out.println("Stem:               " + Fuzzy.getStem(pass));
-		System.out.println("Soundex:            " + Fuzzy.getGode(pass));
-		System.out.println("Misspellings:       " + Fuzzy.getCommonMisspellings(pass));
-		System.out.println(N + "-grams:           " + Fuzzy.getNGrams(pass, N));
-		System.out.println("Matching " + N + "-grams:  " + Fuzzy.getNGramCloseWords(pass, N));
+		Printer.debugln("Jazzy Suggestions:  " + jazzy.getSuggestions(pass));
+		Printer.debugln("Stem:               " + Fuzzy.getStem(pass));
+		Printer.debugln("Soundex:            " + Fuzzy.getGode(pass));
+		Printer.debugln("Misspellings:       " + Fuzzy.getCommonMisspellings(pass));
+		Printer.debugln(N + "-grams:           " + Fuzzy.getNGrams(pass, N));
+		Printer.debugln("Matching " + N + "-grams:  " + Fuzzy.getNGramCloseWords(pass, N));
 		//----
 
 		List<byte[]> listSK = IEX2Lev.keyGen(256, pass, "salt/salt", 100000);
@@ -38,8 +40,9 @@ public class TestFuzzy {
 		String pathName = keyRead.readLine();
 		
 		if (pathName.equals("")) {
-			pathName = "/home/ryan/Documents/maildir/bailey-s/inbox";
+			//pathName = "/home/ryan/Documents/maildir/bailey-s/inbox";
 			//pathName = "/home/ryan/Documents/test/onlysmall";
+			pathName = "/home/ryan/Documents/test/other";
 			System.out.println(pathName);
 		}
 
@@ -63,6 +66,7 @@ public class TestFuzzy {
 		Fuzzy.printMultimap(TextExtractPar.lp2);
 
 		//Pause to look at multimaps
+		System.out.println("Enter to continue...");
 		keyRead.readLine();
 		//-----
 
@@ -93,9 +97,9 @@ public class TestFuzzy {
 						
 						output.add("t:" + Fuzzy.getStem(key) + ":");
 						
-//						for (String word : Fuzzy.getNGramCloseWords(key, N)) {
-//							output.add("n:" + key + ":" + word);
-//						}
+						for (String word : Fuzzy.getNGramCloseWords(key, N)) {
+							output.add("n:" + key + ":" + word);
+						}
 					}
 					
 					output.add("s:" + Fuzzy.getGode(key) + ":");
@@ -105,7 +109,7 @@ public class TestFuzzy {
 				
 				bool[i] = new String[output.size()];
 				for (int j = 0; j < output.size(); ++j) {
-					System.out.println(output.get(j));
+					Printer.debugln(output.get(j));
 					bool[i][j] = output.get(j);
 				}
 			}
@@ -126,7 +130,7 @@ public class TestFuzzy {
 				useCommonMisspellings("m", key, newLp1, newLp2);
 				useStemming("t", key, newLp1, newLp2);
 			}
-			//useNGrams("n", key, newLp1, newLp2);
+			useNGrams("n", key, newLp1, newLp2);
 			useSoundex("s", key, newLp1, newLp2);
 			useNormal("r", key, newLp1, newLp2);
 			

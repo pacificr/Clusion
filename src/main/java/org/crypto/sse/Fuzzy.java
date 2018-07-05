@@ -122,12 +122,12 @@ public class Fuzzy {
 			{
 				String word = str.substring(0, matcher.start()) + alternative + str.substring(matcher.end()).intern();
 				List<String> suggestions = JAZZY.getSuggestions(word);
-				//System.out.print("Misspeling attempt: " + originalStr + ", " + word + ", " + suggestions);
+				Printer.extra("Misspeling attempt: " + originalStr + ", " + word + ", " + suggestions);
 				if (suggestions.size() > 0 && originalStr.equals(suggestions.get(0))) {
 					results.add(word);
-					//System.out.print(", yes");
+					Printer.extra(", yes");
 				}
-				//System.out.println();
+				Printer.extraln("");
 			}
 		}
 		
@@ -349,7 +349,8 @@ public class Fuzzy {
 	}
 	
 	public static void main(String[] args) {
-		System.out.println("Test");
+		Printer.addPrinter(new Printer(Printer.LEVEL.EXTRA));
+		Printer.debugln("Test");
 		
 		Multimap <String, String> test = makeNGramMap(DICTIONARY_FILE);
 		//Multimap <String, String> test = makeMisspellingMap(DICTIONARY);
@@ -360,24 +361,18 @@ public class Fuzzy {
 		
 	}
 	
-	public static void printMultimapInt(Multimap<Integer,String> mm) {
-		for (Integer key : mm.keySet())
-		{
-			System.out.println(key);
-			for (String word : mm.get(key)) {
-				System.out.println("\t" + word);
-			}
-		}
-	}
-	
 	public static void printMultimap(Multimap<String,String> mm) {
-		for (String key : mm.keySet())
-		{
-			System.out.println(key);
+		int numKeys = 0;
+		int numElements = 0;
+		for (String key : mm.keySet()) {
+			++numKeys;
+			Printer.debugln(System.identityHashCode(key) + "(" + key + ")");
 			for (String word : mm.get(key)) {
-				System.out.println("\t" + word);
+				++numElements;
+				Printer.debugln("\t" + System.identityHashCode(word) + "(" + word + ")");
 			}
 		}
+		Printer.debugln("Number of Keys: " + numKeys + ". Number of Elements: " + numElements);
 	}
 	
 	public static Multimap<String, String> makeSoundex() {

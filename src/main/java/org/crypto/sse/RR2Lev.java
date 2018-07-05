@@ -172,7 +172,7 @@ public class RR2Lev implements Serializable {
 							Set<String> keys = output.keySet();
 
 							for (String k : keys) {
-								dictionary.putAll(k, output.get(k));
+								dictionary.putAll(k.intern(), output.get(k));
 							}
 						} catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchProviderException
 								| NoSuchPaddingException | IOException | InvalidAlgorithmParameterException e) {
@@ -234,7 +234,7 @@ public class RR2Lev implements Serializable {
 			inputs.add(i, tmp);
 		}
 
-		System.out.println("End of Partitionning  \n");
+		Printer.debugln("End of Partitionning  \n");
 
 		List<Future<Multimap<String, byte[]>>> futures = new ArrayList<Future<Multimap<String, byte[]>>>();
 		for (final String[] input : inputs) {
@@ -254,7 +254,7 @@ public class RR2Lev implements Serializable {
 			Set<String> keys = future.get().keySet();
 
 			for (String k : keys) {
-				dictionary.putAll(k, future.get().get(k));
+				dictionary.putAll(k.intern(), future.get().get(k));
 			}
 
 		}
@@ -283,7 +283,7 @@ public class RR2Lev implements Serializable {
 
 			counter++;
 			if (((float) counter / 10000) == (int) (counter / 10000)) {
-				System.out.println("Number of processed keywords " + counter);
+				Printer.debugln("Number of processed keywords " + counter);
 			}
 
 			// generate the tag
@@ -297,7 +297,7 @@ public class RR2Lev implements Serializable {
 				random.nextBytes(iv);
 				byte[] v =CryptoPrimitives.encryptAES_CTR_String(key2, iv,
 						"1 " + lookup.get(word).toString(), smallBlock * sizeOfFileIdentifer);
-				gamma.put(new String(l), v);
+				gamma.put(new String(l).intern(), v);
 			}
 
 			else {
@@ -350,7 +350,7 @@ public class RR2Lev implements Serializable {
 					random.nextBytes(iv);
 					byte[] v = CryptoPrimitives.encryptAES_CTR_String(key2, iv,
 									"2 " + listArrayIndex.toString(), smallBlock * sizeOfFileIdentifer);
-					gamma.put(new String(l),v);
+					gamma.put(new String(l).intern(),v);
 				}
 				// big case
 				else {
@@ -401,7 +401,7 @@ public class RR2Lev implements Serializable {
 					random.nextBytes(iv);
 					byte[] v = CryptoPrimitives.encryptAES_CTR_String(key2, iv,
 							"3 " + listArrayIndexTwo.toString(), smallBlock * sizeOfFileIdentifer);
-					gamma.put(new String(l),v);	
+					gamma.put(new String(l).intern(),v);	
 				}
 
 			}
@@ -409,7 +409,7 @@ public class RR2Lev implements Serializable {
 		}
 		long endTime = System.nanoTime();
 		long totalTime = endTime - startTime;
-		// System.out.println("Time for one (w, id) "+totalTime/lookup.size());
+		// Printer.debugln("Time for one (w, id) "+totalTime/lookup.size());
 		return gamma;
 	}
 
