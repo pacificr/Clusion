@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.crypto.sse.fuzzy.Fuzzy;
+
 import com.swabunga.spell.engine.SpellDictionaryHashMap;
 import com.swabunga.spell.engine.Word;
 import com.swabunga.spell.event.SpellCheckEvent;

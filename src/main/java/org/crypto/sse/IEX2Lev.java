@@ -196,7 +196,7 @@ public class IEX2Lev implements Serializable {
 				for (int j = 0; j < 10; j++) {
 
 					if (counter == (int) ((j + 1) * lookup.keySet().size() / 10)) {
-						System.out.println("Meg used="+(Runtime.getRuntime().totalMemory()-
+						Printer.debugln("Meg used="+(Runtime.getRuntime().totalMemory()-
 								Runtime.getRuntime().freeMemory())/(1000*1000)+"M");
 						Printer.statsln("Number of total keywords processed equals " + j + "0 % \n");
 						break;

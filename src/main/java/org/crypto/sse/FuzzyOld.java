@@ -16,7 +16,7 @@ import java.util.regex.Matcher;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
-public class Fuzzy {
+public class FuzzyOld {
 	final private static String MISSPELLING_RULES_FILE = "MisspellingRules.txt";
 	final private static char[] LETTERS = "abcdefghijklmnopqrstuvwxyz".toCharArray();
 	final private static Multimap<Pattern, String> MISSPELLING_RULES = ArrayListMultimap.create();
@@ -34,7 +34,7 @@ public class Fuzzy {
 		BufferedReader fileIn;
 		
 		try {
-			fileIn = new BufferedReader(new FileReader(new File(Fuzzy.DICTIONARY_FILE)));
+			fileIn = new BufferedReader(new FileReader(new File(DICTIONARY_FILE)));
 			String line;
 			while ((line = fileIn.readLine()) != null) {
 				DICTIONARY.add(line);
@@ -366,11 +366,16 @@ public class Fuzzy {
 		int numElements = 0;
 		for (String key : mm.keySet()) {
 			++numKeys;
-			Printer.debugln(System.identityHashCode(key) + "(" + key + ")");
+			Printer.debugln(key);
 			for (String word : mm.get(key)) {
 				++numElements;
-				Printer.debugln("\t" + System.identityHashCode(word) + "(" + word + ")");
+				Printer.debugln("\t" + word);
 			}
+//			Printer.debugln(System.identityHashCode(key) + "(" + key + ")");
+//			for (String word : mm.get(key)) {
+//				++numElements;
+//				Printer.debugln("\t" + System.identityHashCode(word) + "(" + word + ")");
+//			}
 		}
 		Printer.debugln("Number of Keys: " + numKeys + ". Number of Elements: " + numElements);
 	}

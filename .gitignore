@@ -23,9 +23,7 @@ salt/
 .project
 .settings/
 
-log-1.txt
-logZMF.txt
-logs.txt
+log*
 temp-logs.txt
 words-logs.txt
 

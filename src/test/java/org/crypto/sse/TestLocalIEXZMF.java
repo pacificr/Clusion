@@ -67,10 +67,10 @@ public class TestLocalIEXZMF {
 		TextProc.TextProc(false, pathName);
 
 		long startTime2 = System.nanoTime();
-		System.out.println("Number of keywords pairs (w. id): " + TextExtractPar.lp1.size());
-		System.out.println("Number of keywords " + TextExtractPar.lp1.keySet().size());
+		Printer.debugln("Number of keywords pairs (w. id): " + TextExtractPar.lp1.size());
+		Printer.debugln("Number of keywords " + TextExtractPar.lp1.keySet().size());
 
-		System.out.println("\n Beginning of global encrypted multi-map construction \n");
+		Printer.debugln("\n Beginning of global encrypted multi-map construction \n");
 
 		int bigBlock = 1000;
 		int smallBlock = 100;
@@ -92,7 +92,7 @@ public class TestLocalIEXZMF {
 				RR2Lev.constructEMMParGMM(listSK.get(1), TextExtractPar.lp1, bigBlock, smallBlock, dataSize),
 				localMultiMap, dictionaryForMM);
 
-		System.out.println("\n Beginning of local encrypted multi-map construction \n");
+		Printer.debugln("\n Beginning of local encrypted multi-map construction \n");
 
 		IEXZMF.constructMatryoshkaPar(new ArrayList(TextExtractPar.lp1.keySet()), listSK.get(0), listSK.get(1),
 				maxLengthOfMask, falsePosRate);
@@ -101,11 +101,11 @@ public class TestLocalIEXZMF {
 
 		long totalTime2 = endTime2 - startTime2;
 
-		System.out.println("\n*****************************************************************");
-		System.out.println("\n\t\tSTATS");
-		System.out.println("\n*****************************************************************");
+		Printer.statsln("\n*****************************************************************");
+		Printer.statsln("\n\t\tSTATS");
+		Printer.statsln("\n*****************************************************************");
 
-		System.out.println(
+		Printer.statsln(
 				"\nTotal Time elapsed for the local multi-map construction in seconds: " + totalTime2 / 1000000);
 
 		// Beginning of search phase

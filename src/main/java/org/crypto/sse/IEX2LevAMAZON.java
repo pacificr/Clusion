@@ -382,6 +382,8 @@ public class IEX2LevAMAZON {
 	 */
 	@SuppressWarnings("null")
 	public static void main(String[] args) throws Exception {
+		
+		Printer.addPrinter(new Printer(Printer.LEVEL.EXTRA));
 
 		// First Job
 		Configuration conf = new Configuration();

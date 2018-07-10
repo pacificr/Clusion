@@ -15,7 +15,7 @@ public class TestFuzzy {
 	
 	public static void main(String[] args) throws Exception {
 
-		Printer.addPrinter(new Printer(Printer.LEVEL.STATS));
+		Printer.addPrinter(new Printer(Printer.LEVEL.DEBUG));
 		
 		keyRead = new BufferedReader(new InputStreamReader(System.in));
 
@@ -26,11 +26,11 @@ public class TestFuzzy {
 		//----Quick test things
 		JazzySpellChecker jazzy = new JazzySpellChecker();
 		Printer.debugln("Jazzy Suggestions:  " + jazzy.getSuggestions(pass));
-		Printer.debugln("Stem:               " + Fuzzy.getStem(pass));
-		Printer.debugln("Soundex:            " + Fuzzy.getGode(pass));
-		Printer.debugln("Misspellings:       " + Fuzzy.getCommonMisspellings(pass));
-		Printer.debugln(N + "-grams:           " + Fuzzy.getNGrams(pass, N));
-		Printer.debugln("Matching " + N + "-grams:  " + Fuzzy.getNGramCloseWords(pass, N));
+		Printer.debugln("Stem:               " + FuzzyOld.getStem(pass));
+		Printer.debugln("Soundex:            " + FuzzyOld.getGode(pass));
+		Printer.debugln("Misspellings:       " + FuzzyOld.getCommonMisspellings(pass));
+		Printer.debugln(N + "-grams:           " + FuzzyOld.getNGrams(pass, N));
+		Printer.debugln("Matching " + N + "-grams:  " + FuzzyOld.getNGramCloseWords(pass, N));
 		//----
 
 		List<byte[]> listSK = IEX2Lev.keyGen(256, pass, "salt/salt", 100000);
@@ -41,8 +41,8 @@ public class TestFuzzy {
 		
 		if (pathName.equals("")) {
 			//pathName = "/home/ryan/Documents/maildir/bailey-s/inbox";
-			//pathName = "/home/ryan/Documents/test/onlysmall";
-			pathName = "/home/ryan/Documents/test/other";
+			pathName = "/home/ryan/Documents/test/onlysmall";
+			//pathName = "/home/ryan/Documents/test/other";
 			System.out.println(pathName);
 		}
 
@@ -55,15 +55,21 @@ public class TestFuzzy {
 		int smallBlock = 100;
 		
 		//----Add Fuzzyness to multimaps
-		//System.out.println("\nFirst multi-map " + TextExtractPar.lp1);
-		//System.out.println("Second multi-map " + TextExtractPar.lp2);
+		//Printer.debugln("\nFirst multi-map " + TextExtractPar.lp1);
+		//Printer.debugln("Second multi-map " + TextExtractPar.lp2);
+
+		Printer.debugln("Number of keywords before fuzzy: " + TextExtractPar.lp1.keySet().size());
+		Printer.debugln("Number of pairs before fuzzy: " + TextExtractPar.lp1.keys().size() + "\n");
 		
 		testMM();
+
+		Printer.debugln("Number of keywords after fuzzy: " + TextExtractPar.lp1.keySet().size());
+		Printer.debugln("Number of pairs after fuzzy: " + TextExtractPar.lp1.keys().size() + "\n");
 		
-		//System.out.println("\nNew First multi-map " + TextExtractPar.lp1);
-		//System.out.println("New Second multi-map " + TextExtractPar.lp2);
+		//Printer.debugln("\nNew First multi-map " + TextExtractPar.lp1);
+		//Printer.debugln("New Second multi-map " + TextExtractPar.lp2);
 		
-		Fuzzy.printMultimap(TextExtractPar.lp2);
+		FuzzyOld.printMultimap(TextExtractPar.lp2);
 
 		//Pause to look at multimaps
 		System.out.println("Enter to continue...");
@@ -71,8 +77,8 @@ public class TestFuzzy {
 		//-----
 
 		IEX2Lev disj = IEX2Lev.setup(listSK, TextExtractPar.lp1, TextExtractPar.lp2, bigBlock, smallBlock, 0);
-		//Multimap<String, String> soundex = Fuzzy.makeSoundex(Fuzzy.DICTIONARY);
-		//Multimap<String, String> stemming = Fuzzy.makeStemmingMap(Fuzzy.DICTIONARY);
+		//Multimap<String, String> soundex = FuzzyOld.makeSoundex(FuzzyOld.DICTIONARY);
+		//Multimap<String, String> stemming = FuzzyOld.makeStemmingMap(FuzzyOld.DICTIONARY);
 
 		while (true) {
 			System.out.println("How many disjunctions? ");
@@ -88,21 +94,21 @@ public class TestFuzzy {
 				
 				for (String key : keys) {
 
-					List<String> fixed = Fuzzy.JAZZY.getSuggestions(key);
+					List<String> fixed = FuzzyOld.JAZZY.getSuggestions(key);
 					
 					if (fixed.size() > 0 && fixed.get(0).equals(key)) {//Hacky way to check if the word is in the dictionary
-						for (String word : Fuzzy.JAZZY.getSuggestions(key)) {
+						for (String word : FuzzyOld.JAZZY.getSuggestions(key)) {
 							output.add("m:" + key + ":" + word);
 						}
 						
-						output.add("t:" + Fuzzy.getStem(key) + ":");
+						output.add("t:" + FuzzyOld.getStem(key) + ":");
 						
-						for (String word : Fuzzy.getNGramCloseWords(key, N)) {
+						for (String word : FuzzyOld.getNGramCloseWords(key, N)) {
 							output.add("n:" + key + ":" + word);
 						}
 					}
 					
-					output.add("s:" + Fuzzy.getGode(key) + ":");
+					output.add("s:" + FuzzyOld.getGode(key) + ":");
 					
 					output.add("r:" + key + ":");
 				}
@@ -124,7 +130,7 @@ public class TestFuzzy {
 		int test = 0;
 		
 		for (String key : TextExtractPar.lp1.keySet()) {
-			List<String> fixed = Fuzzy.JAZZY.getSuggestions(key);
+			List<String> fixed = FuzzyOld.JAZZY.getSuggestions(key);
 			
 			if (fixed.size() > 0 && fixed.get(0).equals(key)) {//Hacky way to check if the word is in the dictionary
 				useCommonMisspellings("m", key, newLp1, newLp2);
@@ -150,7 +156,7 @@ public class TestFuzzy {
 	}
 	
 	public static void useCommonMisspellings(String prefix, String key, Multimap<String, String> mm1, Multimap<String, String> mm2) {
-		List<String> fuzzyWords = Fuzzy.getCommonMisspellings(key);
+		List<String> fuzzyWords = FuzzyOld.getCommonMisspellings(key);
 		for (String file : TextExtractPar.lp1.get(key)) {
 			for (String word : fuzzyWords) {
 				insertKeyword(prefix, file, word, key, mm1, mm2);
@@ -159,7 +165,7 @@ public class TestFuzzy {
 	}
 	
 	public static void useNGrams(String prefix, String key, Multimap<String, String> mm1, Multimap<String, String> mm2) {
-		List<String> nGrams = Fuzzy.getNGramCloseWords(key, N, MAX);
+		List<String> nGrams = FuzzyOld.getNGramCloseWords(key, N, MAX);
 		for (String file : TextExtractPar.lp1.get(key)) {
 			for (String word : nGrams) {
 				insertKeyword(prefix, file, word, key, mm1, mm2);
@@ -169,14 +175,14 @@ public class TestFuzzy {
 	
 	public static void useSoundex(String prefix, String key, Multimap<String, String> mm1, Multimap<String, String> mm2) {
 		for (String file : TextExtractPar.lp1.get(key)) {
-			String soundex = Fuzzy.getGode(key);
+			String soundex = FuzzyOld.getGode(key);
 			insertKeyword(prefix, file, soundex, "", mm1, mm2);
 		}
 	}
 	
 	public static void useStemming(String prefix, String key, Multimap<String, String> mm1, Multimap<String, String> mm2) {
 		for (String file : TextExtractPar.lp1.get(key)) {
-			String stem = Fuzzy.getStem(key);
+			String stem = FuzzyOld.getStem(key);
 			insertKeyword(prefix, file, stem, "", mm1, mm2);
 		}
 	}
