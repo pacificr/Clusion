@@ -1,71 +1,100 @@
-able\z able
-ible\z ible
+!e
+able
+ible
 
-ally\z ally
-illy\z illy
-elly\z elly
-lly\z lly
-ely\z ely
-ly\z ly
+!e
+ally
+illy
+elly
+lly
+ely
+ly
 
-ie ie
-ei ei
+ie
+ei
 
-au au
-ua ua
+au
+ua
 
-ar\z ar
-er\z er
+!e
+ar
+er
 
-ch ch
-sc sc
+ch
+sc
 
-tion\z tion
-sion\z sion
+!e
+tion
+sion
 
-ous\z ous
-us\z us
+!e
+ous
+us
 
-ery\z ery
-rey\z rey
+!e
+ery
+rey
 
-ence\z ence
-ance\z ance
+!e
+ence
+ance
 
-\Akernel\z kernel
-\Acolonel\z colonel
+!s
+!e
+kernel
+colonel
 
-right\z right
-write\z write
-wright\z wright
+!e
+right
+write
+wright
 
-or\z or
-our\z our
+!e
+or
+our
 
-\Apro pro
-\Apre pre
+!s
+pro
+pre
 
-\Asche sche
-\Ask sk
+!s
+sche
+sk
 
-\Atheir\z their
-\Athere\z there
-\Athey're\z they're
+!s
+!e
+their
+there
+they're
 
-mm mm
-m m
+!ns
+!ne
+mm
+m
 
-nn nn
-n n
+!ns
+!ne
+nn
+n
 
-tt tt
-t t
+!e
+ttle
+tle
 
-\Aweather\z weather
-\Awhether\z whether
+!ns
+!ne
+cce
+ce
 
-se\z se
-ze\z ze
+!s
+!e
+weather
+whether
 
+!e
+se
+ze
+
+!e
 ight ight
 ite ite

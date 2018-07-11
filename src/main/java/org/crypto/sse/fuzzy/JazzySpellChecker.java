@@ -1,4 +1,4 @@
-package org.crypto.sse;
+package org.crypto.sse.fuzzy;
 
 //http://moderntone.blogspot.com/2013/02/tutorial-on-jazzy-spell-checker.html
 import java.io.File;

@@ -18,10 +18,8 @@ public class MOutOfNQueryScheme extends IQueryScheme{
 		
 		for (List<String> nList : query) {
 			int literals = nList.size() - m + 1;
-			if (literals < 1) {
-				results.add(nList);
-				break;
-			}
+			if (literals < 1)
+				literals = 1;
 
 			ArrayList<String> workingList = new ArrayList<String>();
 			populateResults(results, workingList, nList, 0, literals);

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import org.crypto.sse.fuzzy.JazzySpellChecker;
 import org.tartarus.snowball.ext.PorterStemmer;
 
 import java.util.regex.Matcher;

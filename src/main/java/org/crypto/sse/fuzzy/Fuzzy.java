@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.crypto.sse.JazzySpellChecker;
 import org.crypto.sse.Printer;
 
 import com.google.common.collect.ArrayListMultimap;
