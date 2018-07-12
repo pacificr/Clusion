@@ -53,13 +53,13 @@ public class TestLocalIEXZMF_Fuzzy {
 			fuzzy = new Fuzzy(new MOutOfNQueryScheme(2));
 			fuzzy.addFuzzingScheme(new NaturalFuzzingScheme("r"));
 			
-			fuzzy.addFuzzingScheme(new StemmingFuzzingScheme("t")
+			fuzzy.addFuzzingScheme(new StemmingCloseWordsFuzzingScheme("t")
 					.addInputFilter(new ValidCharactersFilter()));
 			
-			fuzzy.addFuzzingScheme(new SoundexFuzzingScheme("s")
+			fuzzy.addFuzzingScheme(new SoundexCloseWordsFuzzingScheme("s")
 					.addInputFilter(new ValidCharactersFilter()));
 			
-			fuzzy.addFuzzingScheme(new CommonMisspellingFuzzingScheme("m")
+			fuzzy.addFuzzingScheme(new MisspellingFuzzingScheme("m")
 					.addInputFilter(new DictionaryFilter())
 					.addOutputFilter(new SpellCheckFilter()));
 			break;
@@ -77,7 +77,7 @@ public class TestLocalIEXZMF_Fuzzy {
 			fuzzy.addFuzzingScheme(new SoundexFuzzingScheme("s")
 					.addInputFilter(new ValidCharactersFilter()));
 			
-			fuzzy.addFuzzingScheme(new CommonMisspellingFuzzingScheme("m")
+			fuzzy.addFuzzingScheme(new MisspellingFuzzingScheme("m")
 					.addInputFilter(new DictionaryFilter())
 					.addOutputFilter(new SpellCheckFilter()));
 			

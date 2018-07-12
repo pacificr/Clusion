@@ -45,6 +45,7 @@ kernel
 colonel
 
 !e
+rite
 right
 write
 wright
@@ -86,6 +87,11 @@ tle
 cce
 ce
 
+!ns
+!ne
+ccu
+cu
+
 !s
 !e
 weather
@@ -98,3 +104,7 @@ ze
 !e
 ight ight
 ite ite
+
+!s
+accept
+except

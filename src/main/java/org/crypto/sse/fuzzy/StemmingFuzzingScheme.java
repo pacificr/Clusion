@@ -11,6 +11,8 @@ public class StemmingFuzzingScheme extends IFuzzingScheme {
 
 	final private static PorterStemmer STEMMER = new PorterStemmer();
 	
+	public StemmingFuzzingScheme() {}
+	
 	public StemmingFuzzingScheme(String prefix) {
 		super(prefix);
 	}

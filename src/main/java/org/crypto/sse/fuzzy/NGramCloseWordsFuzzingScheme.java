@@ -10,6 +10,10 @@ public class NGramCloseWordsFuzzingScheme extends IFuzzingScheme{
 	private int n;
 	final private static int NGRAM_REQUIREMENT = 3;
 	
+	public NGramCloseWordsFuzzingScheme(int n) {
+		this.n = n;
+	}
+	
 	public NGramCloseWordsFuzzingScheme(String prefix, int n) {
 		super(prefix + n);
 		this.n = n;

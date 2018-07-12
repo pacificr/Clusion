@@ -1,15 +1,18 @@
 package org.crypto.sse.fuzzy;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import com.google.common.collect.Multimap;
 
 public abstract class IFuzzingScheme {
 	
-	protected String prefix;
+	protected String prefix = "";
 	private List<IFilter> inputFilters = new ArrayList<IFilter>();
 	private List<IFilter> outputFilters = new ArrayList<IFilter>();
+	
+	public IFuzzingScheme() {}
 	
 	public IFuzzingScheme(String prefix) {
 		this.prefix = prefix;
@@ -29,7 +32,7 @@ public abstract class IFuzzingScheme {
 		return prefix + ":" + keyword + ":" + alternative;
 	}
 	
-	protected void insertKeyword(
+	protected boolean insertKeyword(
 			String file,
 			String keyword,
 			String alternative,
@@ -49,10 +52,12 @@ public abstract class IFuzzingScheme {
 			mm1.put(insert.intern(), file.intern());
 			mm2.put(file.intern(), insert.intern());
 		}
+		
+		return canInsert;
 	}
 	
-	protected void insertEdge(
-			List<String> edges,
+	protected boolean insertEdge(
+			Collection<String> edges,
 			String suggestion,
 			String word) {
 		
@@ -67,6 +72,8 @@ public abstract class IFuzzingScheme {
 		{
 			edges.add(getEncoding(suggestion, word));
 		}
+		
+		return canInsert;
 	}
 	
 	public void fuzz(
@@ -87,11 +94,11 @@ public abstract class IFuzzingScheme {
 		}
 	}
 	
-	public abstract List<String> getEdges(String word);
-	
 	protected abstract void fuzzingScheme(
 			String keyword,
 			Multimap<String, String> origin,
 			Multimap<String, String> mm1,
 			Multimap<String, String> mm2);
+	
+	public abstract Collection<String> getEdges(String word);
 }

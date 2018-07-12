@@ -7,6 +7,8 @@ import com.google.common.collect.Multimap;
 
 public class SoundexFuzzingScheme extends IFuzzingScheme {
 	
+	public SoundexFuzzingScheme() {}
+	
 	public SoundexFuzzingScheme(String prefix) {
 		super(prefix);
 	}
@@ -18,8 +20,8 @@ public class SoundexFuzzingScheme extends IFuzzingScheme {
 			Multimap<String, String> mm1,
 			Multimap<String, String> mm2) {
 		
+		String soundex = getSoundex(keyword);
 		for (String file : origin.get(keyword)) {
-			String soundex = getGode(keyword);
 			insertKeyword(file, "", soundex, mm1, mm2);
 		}
 	}
@@ -27,12 +29,12 @@ public class SoundexFuzzingScheme extends IFuzzingScheme {
 	@Override
 	public List<String> getEdges(String word) {
 		List<String> edges = new ArrayList<String>();
-		insertEdge(edges, "", getGode(word));
+		insertEdge(edges, "", getSoundex(word));
 		return edges;
 	}
 	
 	//https://howtodoinjava.com/algorithm/implement-phonetic-search-using-soundex-algorithm/
-	public static String getGode(String s) {
+	public static String getSoundex(String s) {
 		char[] x = s.toUpperCase().toCharArray();
 
 		char firstLetter = x[0];

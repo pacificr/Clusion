@@ -9,6 +9,10 @@ public class NGramsFuzzingScheme extends IFuzzingScheme{
 
 	private int n;
 	
+	public NGramsFuzzingScheme(int n) {
+		this.n = n;
+	}
+	
 	public NGramsFuzzingScheme(String prefix, int n) {
 		super(prefix + n);
 		this.n = n;
