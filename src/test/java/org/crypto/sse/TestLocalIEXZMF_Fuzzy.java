@@ -15,36 +15,47 @@ public class TestLocalIEXZMF_Fuzzy {
 	
 	public static void main(String[] args) throws Exception {
 		
-		Printer.addPrinter(new Printer(Printer.LEVEL.EXTRA));
+		Printer.addPrinter(new Printer(Printer.LEVEL.STATS));
+		Printer.addPrinter(new Printer.FilePrinter(Printer.LEVEL.EXTRA, "data.txt"));
 
 		BufferedReader keyRead = new BufferedReader(new InputStreamReader(System.in));
 
-		System.out.println("Enter your password :");
+		Printer.normalln("Enter your password :");
 
 		String pass = keyRead.readLine();
+		
+		Printer.debugln(pass);
 
 		List<byte[]> listSK = IEXZMF.keyGen(128, pass, "salt/salt", 100);
 
-		System.out.println("Enter the relative path name of the folder that contains the files to make searchable");
+		Printer.normalln("Enter the relative path name of the folder that contains the files to make searchable");
 
 		String pathName = keyRead.readLine();
 		
 		if (pathName.equals("")) {
+			pathName = "/home/ryan/Documents/maildir/allen-p/inbox";
 			//pathName = "/home/ryan/Documents/maildir/bailey-s/inbox";
-			pathName = "/home/ryan/Documents/test/onlysmall";
+			//pathName = "/home/ryan/Documents/test/onlysmall";
 			//pathName = "/home/ryan/Documents/test/other";
-			System.out.println(pathName);
 		}
+		Printer.debugln(pathName);
 
+		long startTime = System.nanoTime();
 		TextProc.TextProc(false, pathName);
+		Printer.statsln("\nTime to read files: " + (System.nanoTime() - startTime));
+		
+		Printer.statsln("Number of files: " + TextExtractPar.lp2.keySet().size());
+		Printer.statsln("Number of keywords: " + TextExtractPar.lp1.keySet().size());
 
 		//----FUZZY
-		System.out.println("\nChoose a method:");
-		System.out.println("1: Normal");
-		System.out.println("2: 3-Gram");
-		System.out.println("3: Old");
+		Printer.normalln("\nChoose a method:");
+		Printer.normalln("1: Normal");
+		Printer.normalln("2: 3-Gram");
+		Printer.normalln("3: Old");
 		
 		String method = keyRead.readLine();
+		
+		Printer.debugln(method);
 		
 		Fuzzy fuzzy;
 		
@@ -84,23 +95,26 @@ public class TestLocalIEXZMF_Fuzzy {
 			fuzzy.addFuzzingScheme(new NGramCloseWordsFuzzingScheme("n", 3)
 					.addInputFilter(new DictionaryFilter())
 					.addOutputFilter(new EditDistanceFilter(2)));
+			break;
 		}
 
-		long startTime = System.nanoTime();
+		startTime = System.nanoTime();
 		
 		fuzzy.fuzzMultimaps(TextExtractPar.lp1);
 		TextExtractPar.lp1 = fuzzy.getMultimap1();
 		TextExtractPar.lp2 = fuzzy.getMultimap2();
 		
+		Printer.statsln("Time to produce fuzzy words: " + (System.nanoTime() - startTime));
+		Printer.statsln("Number of fuzzy keywords: " + TextExtractPar.lp1.keySet().size());
+
 		Fuzzy.printMultimap(TextExtractPar.lp2);
-		
-		Printer.statsln("Time to produce fuzzy words: " + (System.nanoTime() - startTime) + " ms");
+		Printer.normalln("Enter to continue...");
 		keyRead.readLine();
 		//----
 
-		long startTime2 = System.nanoTime();
-		Printer.debugln("Number of keywords pairs (w. id): " + TextExtractPar.lp1.size());
-		Printer.debugln("Number of keywords " + TextExtractPar.lp1.keySet().size());
+		startTime = System.nanoTime();
+		//Printer.debugln("Number of keywords pairs (w. id): " + TextExtractPar.lp1.size());
+		//Printer.debugln("Number of keywords " + TextExtractPar.lp1.keySet().size());
 
 		Printer.debugln("\n Beginning of global encrypted multi-map construction \n");
 
@@ -129,39 +143,42 @@ public class TestLocalIEXZMF_Fuzzy {
 		IEXZMF.constructMatryoshkaPar(new ArrayList<String>(TextExtractPar.lp1.keySet()), listSK.get(0), listSK.get(1),
 				maxLengthOfMask, falsePosRate);
 
-		long endTime2 = System.nanoTime();
-
-		long totalTime2 = endTime2 - startTime2;
-
-		Printer.statsln("\n*****************************************************************");
-		Printer.statsln("\n\t\tSTATS");
-		Printer.statsln("\n*****************************************************************");
-
 		Printer.statsln(
-				"\nTotal Time elapsed for the local multi-map construction in seconds: " + totalTime2 / 1000000);
+				"\nTime to construct local multi-maps: " + (System.nanoTime() - startTime));
 
 		// Beginning of search phase
 
 		while (true) {
 
-			System.out.println("How many disjunctions? ");
+			Printer.normalln("How many disjunctions?");
 			int numDisjunctions = 1;
 			try {
 				numDisjunctions = Integer.parseInt(keyRead.readLine());
 			}catch(Exception e) {
-				System.out.println(1);
+				//Printer.normalln(1);
+				break;
 			}
+			
+			Printer.debugln(""+numDisjunctions);
 
 			// Storing the CNF form
 			String[][] bool = new String[numDisjunctions][];
 			for (int i = 0; i < numDisjunctions; i++) {
-				System.out.println("Enter the keywords of the " + i + "th disjunctions ");
-				bool[i] = keyRead.readLine().toLowerCase().split(" ");
+				Printer.normalln("Enter the keywords of the " + i + "th disjunctions ");
+				String terms = keyRead.readLine();
+				Printer.debugln(terms);
+				bool[i] = terms.toLowerCase().split(" ");
 			}
 			
+			startTime = System.nanoTime();
 			bool = fuzzy.fuzzQuery(bool);
+			Printer.statsln("Time to fuzz query: " + (System.nanoTime() - startTime));
 
+			startTime = System.nanoTime();
 			TestLocalIEXZMF.test("logZMF_Fuzzy.txt", "Test", 1, disj, listSK, bool);
+			Printer.statsln("Time to run query: " + (System.nanoTime() - startTime));
 		}
+		
+		Printer.close();
 	}
 }

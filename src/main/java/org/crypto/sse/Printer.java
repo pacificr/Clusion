@@ -1,5 +1,8 @@
 package org.crypto.sse;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,9 +20,42 @@ public class Printer {
 		level = l;
 	}
 	
-	private void concretePrint(String output) {
-		//Override this function for logging to file etc...
+	protected void concretePrint(String output) {
 		System.out.print(output);
+	}
+	
+	protected void concreteClose() {};
+	
+	public static class FilePrinter extends Printer{
+		
+		private BufferedWriter file;
+		
+		public FilePrinter(LEVEL l, String fileName) {
+			super(l);
+			try {
+				file = new BufferedWriter(new FileWriter(fileName, true));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		@Override
+		protected void concretePrint(String output) {
+			try {
+				file.write(output);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		@Override
+		protected void concreteClose() {
+			try {
+				file.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	private boolean canPrint(LEVEL l) {
@@ -61,6 +97,12 @@ public class Printer {
 			if (printer.canPrint(l)) {
 				printer.concretePrint(output);
 			}
+		}
+	}
+	
+	public static void close() {
+		for (Printer printer : PRINTERS) {
+			printer.concreteClose();
 		}
 	}
 	
