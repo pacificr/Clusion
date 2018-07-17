@@ -6,12 +6,32 @@ import java.util.HashSet;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
+/**
+ * Produces edges between a keyword and the stem it maps to, as well as
+ * between the keyword and any stem that misspellings of the keyword
+ * are mapped to. Misspellings are determined by
+ * {@link MisspellingFuzzingScheme}.
+ * 
+ * Must store a multimap from stem to keywords in order to use
+ * {@link #getEdges(String)}.
+ * 
+ * @author Ryan Estes
+ * @see {@link StemmingFuzzingScheme} {@link SoundexCloseWordsFuzzingScheme}
+ */
 public class StemmingCloseWordsFuzzingScheme extends IFuzzingScheme{
 
 	private Multimap<String, String> edges = ArrayListMultimap.create();
 	
+	/**
+	 * See {@link IFuzzingScheme#IFuzzingScheme()}.
+	 */
 	public StemmingCloseWordsFuzzingScheme() {}
 	
+	/**
+	 * See {@link IFuzzingScheme#IFuzzingScheme(String)}.
+	 * 
+	 * @param prefix
+	 */
 	public StemmingCloseWordsFuzzingScheme(String prefix) {
 		super(prefix);
 	}

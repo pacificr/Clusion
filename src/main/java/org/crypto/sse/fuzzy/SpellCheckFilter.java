@@ -2,6 +2,14 @@ package org.crypto.sse.fuzzy;
 
 import java.util.List;
 
+/**
+ * Filters alternatives by whether or not a spell checker's first guess when
+ * checking it is the keyword that the it was derived from. 
+ * 
+ * Only used as an output filter.
+ * 
+ * @author Ryan Estes
+ */
 public class SpellCheckFilter extends IFilter{
 
 	@Override

@@ -7,12 +7,29 @@ import org.tartarus.snowball.ext.PorterStemmer;
 
 import com.google.common.collect.Multimap;
 
+/**
+ * Produces pseudo edges between the stem that a keyword maps to
+ * and all keywords that map to that stem.
+ * 
+ * https://en.wikipedia.org/wiki/Stemming
+ * 
+ * @author Ryan Estes
+ * @see {@link StemmingCloseWordsFuzzingScheme}
+ */
 public class StemmingFuzzingScheme extends IFuzzingScheme {
 
 	final private static PorterStemmer STEMMER = new PorterStemmer();
 	
+	/**
+	 * See {@link IFuzzingScheme#IFuzzingScheme()}.
+	 */
 	public StemmingFuzzingScheme() {}
 	
+	/**
+	 * See {@link IFuzzingScheme#IFuzzingScheme(String)}.
+	 * 
+	 * @param prefix
+	 */
 	public StemmingFuzzingScheme(String prefix) {
 		super(prefix);
 	}

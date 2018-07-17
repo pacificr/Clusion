@@ -13,6 +13,12 @@ import java.util.regex.Pattern;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
+/**
+ * Uses rules to produce possible misspellings in English language.
+ * 
+ * @author Ryan Estes
+ *
+ */
 public class MisspellingFuzzingScheme extends IFuzzingScheme{
 	
 	final private static String MISSPELLING_RULES_FILE = "MisspellingRules.txt";
@@ -20,12 +26,22 @@ public class MisspellingFuzzingScheme extends IFuzzingScheme{
 	final private static Multimap<String, String> MISSPELLINGS = ArrayListMultimap.create();
 	final private static Multimap<String, String> SUGGESTIONS = ArrayListMultimap.create();
 
+	/**
+	 * @see {@link IFuzzingScheme#IFuzzingScheme()}
+	 */
 	public MisspellingFuzzingScheme() {}
 	
+	/**
+	 * @see {@link IFuzzingScheme#IFuzzingScheme(String)}.
+	 * @param prefix
+	 */
 	public MisspellingFuzzingScheme(String prefix) {
 		super(prefix);
 	}
 	
+	/**
+	 * 
+	 */
 	@Override
 	public void fuzzingScheme(
 			String keyword,

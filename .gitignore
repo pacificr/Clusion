@@ -29,5 +29,6 @@ words-logs.txt
 
 test.db
 data.txt
+output.txt
 
 hs_err_pid*

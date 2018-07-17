@@ -5,10 +5,24 @@ import java.util.List;
 
 import com.google.common.collect.Multimap;
 
+/**
+ * Produces an "edge" which is just the keyword unmodified. Used when searching
+ * for exact matches.
+ * 
+ * @author Ryan Estes
+ */
 public class NaturalFuzzingScheme extends IFuzzingScheme{
 
+	/**
+	 * See {@link IFuzzingScheme#IFuzzingScheme()}.
+	 */
 	public NaturalFuzzingScheme() {}
 
+	/**
+	 * See {@link IFuzzingScheme#IFuzzingScheme(String)}.
+	 * 
+	 * @param prefix
+	 */
 	public NaturalFuzzingScheme(String prefix) {
 		super(prefix);
 	}

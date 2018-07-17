@@ -9,6 +9,13 @@ import org.crypto.sse.fuzzy.*;
 
 import com.google.common.collect.Multimap;
 
+/**
+ * Tests Fuzzy search over encrypted data as described by A. Boldyreva
+ * and N. Chenette in "Efficient Fuzzy Search on Encrypted Data". Based
+ * on {@link TestLocalIEXZMF} but using {@link Fuzzy}.
+ * 
+ * @author Ryan Estes
+ */
 public class TestLocalIEXZMF_Fuzzy {
 	private static final int falsePosRate = 25;
 	private static final int maxLengthOfMask = 20;

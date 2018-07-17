@@ -3,6 +3,12 @@ package org.crypto.sse.fuzzy;
 import java.util.Hashtable;
 import java.util.List;
 
+/**
+ * Filters words by checking to see if they appear in a dictionary (defined by
+ * {@link Fuzzy}.
+ * 
+ * @author Ryan Estes
+ */
 public class DictionaryFilter extends IFilter{
 
 	private static Hashtable<String, Boolean> words = new Hashtable<String, Boolean>();

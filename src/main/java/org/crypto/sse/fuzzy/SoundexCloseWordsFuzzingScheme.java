@@ -6,12 +6,32 @@ import java.util.HashSet;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
+/**
+ * Produces edges between a keyword and the soundex it maps to, as well as
+ * between the keyword and any soundecies that misspellings of the keyword
+ * are mapped to. Misspellings are determined by
+ * {@link MisspellingFuzzingScheme}.
+ * 
+ * Must store a multimap from soundex to keywords in order to use
+ * {@link #getEdges(String)}.
+ * 
+ * @author Ryan Estes
+ * @see {@link SoundexFuzzingScheme} {@link StemmingCloseWordsFuzzingScheme}
+ */
 public class SoundexCloseWordsFuzzingScheme extends IFuzzingScheme{
 	
 	private Multimap<String, String> edges = ArrayListMultimap.create();
 	
+	/**
+	 * See {@link IFuzzingScheme#IFuzzingScheme()}.
+	 */
 	public SoundexCloseWordsFuzzingScheme() {}
 	
+	/**
+	 * See {@link IFuzzingScheme#IFuzzingScheme(String)}.
+	 * 
+	 * @param prefix
+	 */
 	public SoundexCloseWordsFuzzingScheme(String prefix) {
 		super(prefix);
 	}
