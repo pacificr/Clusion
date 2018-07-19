@@ -15,6 +15,7 @@ import com.google.common.collect.Multimap;
  * 
  * 
  * @author Ryan Estes
+ * @see {@link Fuzzy}
  */
 public abstract class IFuzzingScheme {
 	

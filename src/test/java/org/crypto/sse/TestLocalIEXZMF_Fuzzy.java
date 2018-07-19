@@ -23,29 +23,19 @@ public class TestLocalIEXZMF_Fuzzy {
 	public static void main(String[] args) throws Exception {
 		
 		Printer.addPrinter(new Printer(Printer.LEVEL.STATS));
-		Printer.addPrinter(new Printer.FilePrinter(Printer.LEVEL.EXTRA, "data.txt"));
+		//Printer.addPrinter(new Printer.FilePrinter(Printer.LEVEL.EXTRA, "data.txt"));
 
 		BufferedReader keyRead = new BufferedReader(new InputStreamReader(System.in));
 
 		Printer.normalln("Enter your password :");
 
 		String pass = keyRead.readLine();
-		
-		Printer.debugln(pass);
 
 		List<byte[]> listSK = IEXZMF.keyGen(128, pass, "salt/salt", 100);
 
 		Printer.normalln("Enter the relative path name of the folder that contains the files to make searchable");
 
 		String pathName = keyRead.readLine();
-		
-		if (pathName.equals("")) {
-			pathName = "/home/ryan/Documents/maildir/allen-p/inbox";
-			//pathName = "/home/ryan/Documents/maildir/bailey-s/inbox";
-			//pathName = "/home/ryan/Documents/test/onlysmall";
-			//pathName = "/home/ryan/Documents/test/other";
-		}
-		Printer.debugln(pathName);
 
 		long startTime = System.nanoTime();
 		TextProc.TextProc(false, pathName);
@@ -53,57 +43,16 @@ public class TestLocalIEXZMF_Fuzzy {
 		
 		Printer.statsln("Number of files: " + TextExtractPar.lp2.keySet().size());
 		Printer.statsln("Number of keywords: " + TextExtractPar.lp1.keySet().size());
-
-		//----FUZZY
-		Printer.normalln("\nChoose a method:");
-		Printer.normalln("1: Normal");
-		Printer.normalln("2: 3-Gram");
-		Printer.normalln("3: Old");
 		
-		String method = keyRead.readLine();
-		
-		Printer.debugln(method);
-		
-		Fuzzy fuzzy;
-		
-		switch(method) {
-		default:
-			fuzzy = new Fuzzy(new MOutOfNQueryScheme(2));
-			fuzzy.addFuzzingScheme(new NaturalFuzzingScheme("r"));
-			
-			fuzzy.addFuzzingScheme(new StemmingCloseWordsFuzzingScheme("t")
-					.addInputFilter(new ValidCharactersFilter()));
-			
-			fuzzy.addFuzzingScheme(new SoundexCloseWordsFuzzingScheme("s")
-					.addInputFilter(new ValidCharactersFilter()));
-			
-			fuzzy.addFuzzingScheme(new MisspellingFuzzingScheme("m")
+		Fuzzy fuzzy = new Fuzzy(new MOutOfNQueryScheme(2))
+				.addFuzzingScheme(new NaturalFuzzingScheme("r"))
+				.addFuzzingScheme(new StemmingCloseWordsFuzzingScheme("t")
+					.addInputFilter(new ValidCharactersFilter()))
+				.addFuzzingScheme(new SoundexCloseWordsFuzzingScheme("s")
+					.addInputFilter(new ValidCharactersFilter()))
+				.addFuzzingScheme(new MisspellingFuzzingScheme("m")
 					.addInputFilter(new DictionaryFilter())
 					.addOutputFilter(new SpellCheckFilter()));
-			break;
-		case "2":
-			fuzzy = new Fuzzy(new MOutOfNQueryScheme(3));
-			fuzzy.addFuzzingScheme(new NGramsFuzzingScheme("n", 3));
-			break;
-		case "3":
-			fuzzy = new Fuzzy();
-			fuzzy.addFuzzingScheme(new NaturalFuzzingScheme("r"));
-			
-			fuzzy.addFuzzingScheme(new StemmingFuzzingScheme("t")
-					.addInputFilter(new ValidCharactersFilter()));
-			
-			fuzzy.addFuzzingScheme(new SoundexFuzzingScheme("s")
-					.addInputFilter(new ValidCharactersFilter()));
-			
-			fuzzy.addFuzzingScheme(new MisspellingFuzzingScheme("m")
-					.addInputFilter(new DictionaryFilter())
-					.addOutputFilter(new SpellCheckFilter()));
-			
-			fuzzy.addFuzzingScheme(new NGramCloseWordsFuzzingScheme("n", 3)
-					.addInputFilter(new DictionaryFilter())
-					.addOutputFilter(new EditDistanceFilter(2)));
-			break;
-		}
 
 		startTime = System.nanoTime();
 		
@@ -115,15 +64,10 @@ public class TestLocalIEXZMF_Fuzzy {
 		Printer.statsln("Number of fuzzy keywords: " + TextExtractPar.lp1.keySet().size());
 
 		Fuzzy.printMultimap(TextExtractPar.lp2);
-		Printer.normalln("Enter to continue...");
-		keyRead.readLine();
-		//----
-
-		startTime = System.nanoTime();
-		//Printer.debugln("Number of keywords pairs (w. id): " + TextExtractPar.lp1.size());
-		//Printer.debugln("Number of keywords " + TextExtractPar.lp1.keySet().size());
 
 		Printer.debugln("\n Beginning of global encrypted multi-map construction \n");
+
+		startTime = System.nanoTime();
 
 		int bigBlock = 1000;
 		int smallBlock = 100;
@@ -157,24 +101,18 @@ public class TestLocalIEXZMF_Fuzzy {
 
 		while (true) {
 
-			Printer.normalln("How many disjunctions?");
+			Printer.normalln("How many disjunctions? Leave blank to stop.");
 			int numDisjunctions = 1;
 			try {
 				numDisjunctions = Integer.parseInt(keyRead.readLine());
 			}catch(Exception e) {
-				//Printer.normalln(1);
 				break;
 			}
-			
-			Printer.debugln(""+numDisjunctions);
 
-			// Storing the CNF form
 			String[][] bool = new String[numDisjunctions][];
 			for (int i = 0; i < numDisjunctions; i++) {
 				Printer.normalln("Enter the keywords of the " + i + "th disjunctions ");
-				String terms = keyRead.readLine();
-				Printer.debugln(terms);
-				bool[i] = terms.toLowerCase().split(" ");
+				bool[i] = keyRead.readLine().toLowerCase().split(" ");
 			}
 			
 			startTime = System.nanoTime();

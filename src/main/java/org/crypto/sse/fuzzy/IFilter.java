@@ -6,6 +6,7 @@ package org.crypto.sse.fuzzy;
  * it should be used.
  * 
  * @author Ryan Estes
+ * @see {@link Fuzzy}
  */
 public abstract class IFilter {
 	

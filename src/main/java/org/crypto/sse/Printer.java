@@ -19,7 +19,6 @@ import java.util.List;
  * subclassing.
  * 
  * @author Ryan Estes
- *
  */
 public class Printer {
 	
@@ -66,7 +65,6 @@ public class Printer {
 	 * Printer that prints to a file.
 	 * 
 	 * @author Ryan Estes
-	 *
 	 */
 	public static class FilePrinter extends Printer{
 		

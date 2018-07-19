@@ -17,7 +17,6 @@ import com.google.common.collect.Multimap;
  * Uses rules to produce possible misspellings in English language.
  * 
  * @author Ryan Estes
- *
  */
 public class MisspellingFuzzingScheme extends IFuzzingScheme{
 	

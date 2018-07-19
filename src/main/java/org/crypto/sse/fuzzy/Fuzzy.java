@@ -20,7 +20,7 @@ import com.google.common.collect.Multimap;
  * {@link IQueryScheme} to modify an entire query.
  * 
  * @author Ryan Estes
- * @see {@link IFuzzingScheme} {@link IQueryScheme}
+ * @see {@link IFuzzingScheme} {@link IQueryScheme} {@link IFilter}
  */
 public class Fuzzy {
 	

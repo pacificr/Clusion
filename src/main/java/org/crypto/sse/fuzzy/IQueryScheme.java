@@ -8,6 +8,7 @@ import java.util.List;
  * for other forms of queries.
  * 
  * @author Ryan Estes
+ * @see {@link Fuzzy}
  */
 public abstract class IQueryScheme {
 

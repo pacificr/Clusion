@@ -15,11 +15,10 @@ import java.util.List;
 public class MOutOfNQueryScheme extends IQueryScheme{
 
 	private int m;
-	public static int temp;
 	
 	/**
 	 * Specify the number of elements each list of strings in the
-	 * input query must be matched.
+	 * input query must match.
 	 * 
 	 * @param m
 	 */
@@ -33,7 +32,7 @@ public class MOutOfNQueryScheme extends IQueryScheme{
 		List<List<String>> results = new ArrayList<List<String>>();
 		
 		for (List<String> nList : query) {
-			int literals = nList.size() - temp + 1;
+			int literals = nList.size() - m + 1;
 			if (literals < 1)
 				literals = 1;
 

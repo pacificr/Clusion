@@ -123,6 +123,10 @@ For a quick test, create folder and store some input files, needed jars and test
 
 	run `java org.crypto.sse.IEX2LevAMAZON`
 
++ to test IEX-ZMF with Fuzzy search
+
+	run `java org.crypto.sse.TestLocalIEXZMF_Fuzzy`
+
 
 ## Documentation
 

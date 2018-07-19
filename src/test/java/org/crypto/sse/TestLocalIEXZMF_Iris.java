@@ -148,7 +148,7 @@ public class TestLocalIEXZMF_Iris {
 		for (int t = 1; t <= 50; ++t) {
 			
 			Printer.normalln("L: "+t);
-			MOutOfNQueryScheme.temp = t;
+			//MOutOfNQueryScheme.temp = t;
 
 			String[][] bool = new String[1][];
 			bool[0] = keywords;
